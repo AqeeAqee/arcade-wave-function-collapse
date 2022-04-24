@@ -3,6 +3,11 @@
 
 namespace WFC {
     export class SimpleTiledModel extends Model{
+
+        periodic:boolean
+        tilesize:number
+        tiles:tile[]=[]
+        
 /**
  *
  * @param {object} data Tiles, subset and constraints definitions
@@ -13,7 +18,7 @@ namespace WFC {
  *
  * @constructor
  */
-constructor(data:[], subsetName:string, width:number, height:number, periodic:boolean) {
+constructor(data:Data, subsetName:string, width:number, height:number, periodic:boolean) {
     super()
     const tilesize = data.tilesize || 16;
 
@@ -24,7 +29,7 @@ constructor(data:[], subsetName:string, width:number, height:number, periodic:bo
     this.periodic = periodic;
     this.tilesize = tilesize;
 
-    const unique = !!data.unique;
+    const unique = !!data.unique; //?
     let subset = null;
 
     if (subsetName && data.subsets && !!data.subsets[subsetName]) {
@@ -32,7 +37,7 @@ constructor(data:[], subsetName:string, width:number, height:number, periodic:bo
     }
 
     const tile = function tile(f) {
-        const result = new Array(tilesize * tilesize);
+        const result = []  // new Array(tilesize * tilesize);
 
         for (let y = 0; y < tilesize; y++) {
             for (let x = 0; x < tilesize; x++) {
@@ -59,7 +64,7 @@ constructor(data:[], subsetName:string, width:number, height:number, periodic:bo
     const tempStationary = [];
 
     const action = [];
-    const firstOccurrence = {};
+    const firstOccurrence:{[index:string]:number} = {};
 
     let funcA;
     let funcB;
@@ -185,14 +190,14 @@ constructor(data:[], subsetName:string, width:number, height:number, periodic:bo
     this.T = action.length;
     this.weights = tempStationary;
 
-    this.propagator = new Array(4);
-    const tempPropagator = new Array(4);
+    this.propagator = []  // new Array(4);
+    const tempPropagator:boolean[][][]=[]  // new Array(4);
 
     for (let i = 0; i < 4; i++) {
-        this.propagator[i] = new Array(this.T);
-        tempPropagator[i] = new Array(this.T);
+        this.propagator[i] = []  // new Array(this.T);
+        tempPropagator[i] = []  // new Array(this.T);
         for (let t = 0; t < this.T; t++) {
-            tempPropagator[i][t] = new Array(this.T);
+            tempPropagator[i][t] = []  // new Array(this.T);
             for (let t2 = 0; t2 < this.T; t2++) {
                 tempPropagator[i][t][t2] = false;
             }
@@ -264,7 +269,7 @@ constructor(data:[], subsetName:string, width:number, height:number, periodic:bo
  *
  * @protected
  */
-onBoundary (x, y) {
+onBoundary (x:number, y:number) {
     return !this.periodic && (x < 0 || y < 0 || x >= this.FMX || y >= this.FMY);
 };
 
@@ -278,8 +283,8 @@ onBoundary (x, y) {
  *
  * @public
  */
-onBoundary (array, defaultColor) {
-    array = array || new Uint8Array(this.FMXxFMY * this.tilesize * this.tilesize * 4);
+        graphics  (array:number[], defaultColor:number) {
+    array = array || [] //new Uint8Array(this.FMXxFMY * this.tilesize * this.tilesize * 4);
 
     if (this.isGenerationComplete()) {
         this.graphicsComplete(array);
@@ -297,7 +302,7 @@ onBoundary (array, defaultColor) {
  *
  * @protected
  */
-onBoundary (array) {
+        graphicsComplete  (array:number[]) {
     for (let x = 0; x < this.FMX; x++) {
         for (let y = 0; y < this.FMY; y++) {
             const tile = this.tiles[this.observed[x + y * this.FMX]];
@@ -325,7 +330,7 @@ onBoundary (array) {
  *
  * @protected
  */
-onBoundary (array, defaultColor) {
+        graphicsIncomplete  (array:number[], defaultColor:number) {
     if (!defaultColor || defaultColor.length !== 4) {
         defaultColor = false;
     }

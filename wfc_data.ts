@@ -1,215 +1,203 @@
 namespace WFC{
-    class tile{
+    export class tile{
         constructor(
             public name:string, 
             public symmetry:string,
             public weight:number
-            )
+        ) { }
     }
 
-    class neighbor{
+    export class neighbor{
         constructor(
             public left:string,
             public right:string
-            )
+        ) { }
     }
-    class subset{
+    export class subset{
         constructor(
             public name:string, 
             public tile:string[]
-            )
+        ) { }
     }
-    class Data{
+    export class Data{
+        public unique: boolean
         constructor(
-            public size:number=14,
+            public tilesize:number=14,
             public tiles:tile[],
             public neighbors:neighbor[],
-            public subsets:subset[]
-            )
+            public subsets: {[index:string]: string[]; }
+        ){
+            this.unique== true
+        }
     }
+    let test: { key: string; value: string[]; }
 
+
+let data=new Data(
+    14,
+    [
+        new tile("bridge", "I", 1.0),
+        new tile("component", "X", 20.0),
+        new tile("connection", "T", 10.0),
+        new tile("corner", "L", 10.0),
+        new tile("substrate", "X", 2.0),
+        new tile("t", "T", 0.1),
+        new tile("track", "I", 2.0),
+        new tile("transition", "T", 0.4),
+        new tile("turn", "L", 1.0),
+        new tile("viad", "I", 0.1),
+        new tile("vias", "T", 0.3),
+        new tile("wire", "I", 0.5),
+        new tile("skew", "L", 2.0),
+        new tile("dskew", "\\", 2.0)
+    ],
+    [
+        new neighbor("bridge", "bridge"),
+        new neighbor("bridge 1", "bridge 1"),
+        new neighbor("bridge 1", "connection 1"),
+        new neighbor("bridge 1", "t 2"),
+        new neighbor("bridge 1", "t 3"),
+        new neighbor("bridge 1", "track 1"),
+        new neighbor("bridge", "transition 1"),
+        new neighbor("bridge 1", "turn 1"),
+        new neighbor("bridge 1", "viad"),
+        new neighbor("bridge 1", "vias 1"),
+        new neighbor("bridge", "wire"),
+        new neighbor("component", "component"),
+        new neighbor("connection 1", "component"),
+        new neighbor("connection", "connection"),
+        new neighbor("connection", "corner"),
+        new neighbor("t 1", "connection 1"),
+        new neighbor("t 2", "connection 1"),
+        new neighbor("track 1", "connection 1"),
+        new neighbor("turn", "connection 1"),
+        new neighbor("substrate", "corner 1"),
+        new neighbor("t 3", "corner 1"),
+        new neighbor("track", "corner 1"),
+        new neighbor("transition 2", "corner 1"),
+        new neighbor("transition", "corner 1"),
+        new neighbor("turn 1", "corner 1"),
+        new neighbor("turn 2", "corner 1"),
+        new neighbor("viad 1", "corner 1"),
+        new neighbor("vias 1", "corner 1"),
+        new neighbor("vias 2", "corner 1"),
+        new neighbor("vias", "corner 1"),
+        new neighbor("wire 1", "corner 1"),
+        new neighbor("substrate", "substrate"),
+        new neighbor("substrate", "t 1"),
+        new neighbor("substrate", "track"),
+        new neighbor("substrate", "transition 2"),
+        new neighbor("substrate", "turn"),
+        new neighbor("substrate", "viad 1"),
+        new neighbor("substrate", "vias 2"),
+        new neighbor("substrate", "vias 3"),
+        new neighbor("substrate", "wire 1"),
+        new neighbor("t 1", "t 3"),
+        new neighbor("t 3", "t 1"),
+        new neighbor("t 1", "t 2"),
+        new neighbor("t 2", "t 2"),
+        new neighbor("t 2", "t"),
+        new neighbor("t 3", "track"),
+        new neighbor("t 1", "track 1"),
+        new neighbor("t 2", "track 1"),
+        new neighbor("t 1", "transition 3"),
+        new neighbor("t 3", "transition 2"),
+        new neighbor("t 2", "transition 3"),
+        new neighbor("t 3", "turn"),
+        new neighbor("t 1", "turn 1"),
+        new neighbor("t 2", "turn 1"),
+        new neighbor("t 2", "turn 2"),
+        new neighbor("t 3", "viad 1"),
+        new neighbor("t 1", "viad"),
+        new neighbor("t 2", "viad"),
+        new neighbor("t 2", "vias 1"),
+        new neighbor("t 1", "vias 1"),
+        new neighbor("vias 1", "t 1"),
+        new neighbor("vias 2", "t 1"),
+        new neighbor("wire 1", "t 1"),
+        new neighbor("track", "track"),
+        new neighbor("track 1", "track 1"),
+        new neighbor("track 1", "transition 3"),
+        new neighbor("track", "transition 2"),
+        new neighbor("track", "turn"),
+        new neighbor("track 1", "turn 1"),
+        new neighbor("track", "viad 1"),
+        new neighbor("track 1", "viad"),
+        new neighbor("track", "vias 2"),
+        new neighbor("track", "vias 3"),
+        new neighbor("track 1", "vias 1"),
+        new neighbor("track", "wire 1"),
+        new neighbor("transition 2", "turn"),
+        new neighbor("transition", "turn"),
+        new neighbor("transition 1", "turn 1"),
+        new neighbor("transition 2", "viad 1"),
+        new neighbor("transition 2", "vias 2"),
+        new neighbor("transition 2", "vias 3"),
+        new neighbor("transition 2", "vias"),
+        new neighbor("wire", "transition 1"),
+        new neighbor("transition 2", "wire 1"),
+        new neighbor("turn 1", "turn"),
+        new neighbor("turn 2", "turn"),
+        new neighbor("turn", "turn 1"),
+        new neighbor("turn", "turn 2"),
+        new neighbor("turn 1", "viad 1"),
+        new neighbor("turn", "viad"),
+        new neighbor("turn 1", "vias 2"),
+        new neighbor("turn 1", "vias 3"),
+        new neighbor("turn 1", "vias"),
+        new neighbor("turn", "vias 1"),
+        new neighbor("turn 1", "wire 1"),
+        new neighbor("viad 1", "viad 1"),
+        new neighbor("viad 1", "vias 2"),
+        new neighbor("viad 1", "vias 3"),
+        new neighbor("viad 1", "wire 1"),
+        new neighbor("vias 1", "wire 1"),
+        new neighbor("vias 2", "wire 1"),
+        new neighbor("vias 1", "vias 3"),
+        new neighbor("vias 2", "vias 2"),
+        new neighbor("vias 2", "vias"),
+        new neighbor("wire", "wire"),
+        new neighbor("wire 1", "wire 1"),
+        new neighbor("bridge 1", "dskew"),
+        new neighbor("connection 3", "dskew"),
+        new neighbor("dskew", "dskew"),
+        new neighbor("skew", "dskew"),
+        new neighbor("t", "dskew"),
+        new neighbor("t 2", "dskew"),
+        new neighbor("t 1", "dskew"),
+        new neighbor("track 1", "dskew"),
+        new neighbor("transition 1", "dskew"),
+        new neighbor("turn 3", "dskew"),
+        new neighbor("viad", "dskew"),
+        new neighbor("vias 3", "dskew"),
+        new neighbor("skew", "bridge 1"),
+        new neighbor("skew", "connection 1"),
+        new neighbor("corner", "skew"),
+        new neighbor("corner 3", "skew"),
+        new neighbor("skew", "dskew"),
+        new neighbor("skew", "skew 2"),
+        new neighbor("skew 1", "skew"),
+        new neighbor("skew 1", "skew 3"),
+        new neighbor("substrate", "skew"),
+        new neighbor("t 3", "skew"),
+        new neighbor("t", "skew 2"),
+        new neighbor("t 2", "skew 2"),
+        new neighbor("t 1", "skew 2"),
+        new neighbor("track", "skew"),
+        new neighbor("track 1", "skew 2"),
+        new neighbor("transition", "skew"),
+        new neighbor("transition 1", "skew 2"),
+        new neighbor("turn 1", "skew"),
+        new neighbor("turn 2", "skew"),
+        new neighbor("turn 3", "skew 2"),
+        new neighbor("viad 1", "skew"),
+        new neighbor("viad", "skew 2"),
+        new neighbor("vias", "skew"),
+        new neighbor("vias 1", "skew"),
+        new neighbor("vias 2", "skew"),
+        new neighbor("vias 3", "skew 2"),
+        new neighbor("wire 1", "skew"),
+    ],
+    {"Turnless": ["bridge","component","connection","corner","substrate","t","track","transition","viad","vias","wire","skew","dskew"]}
+)
 }
-
-
-<set size="14" >
-    <tiles>
-    <tile name="bridge" symmetry = "I" weight = "1.0" />
-        <tile name="component" symmetry = "X" weight = "20.0" />
-            <tile name="connection" symmetry = "T" weight = "10.0" />
-                <tile name="corner" symmetry = "L" weight = "10.0" />
-                    <tile name="substrate" symmetry = "X" weight = "2.0" />
-                        <tile name="t" symmetry = "T" weight = "0.1" />
-                            <tile name="track" symmetry = "I" weight = "2.0" />
-                                <tile name="transition" symmetry = "T" weight = "0.4" />
-                                    <tile name="turn" symmetry = "L" weight = "1.0" />
-                                        <tile name="viad" symmetry = "I" weight = "0.1" />
-                                            <tile name="vias" symmetry = "T" weight = "0.3" />
-                                                <tile name="wire" symmetry = "I" weight = "0.5" />
-                                                    <tile name="skew" symmetry = "L" weight = "2.0" />
-                                                        <tile name="dskew" symmetry = "\" weight="2.0"/>
-                                                            < /tiles>
-                                                            < neighbors >
-                                                            <neighbor left="bridge" right = "bridge" />
-                                                                <neighbor left="bridge 1" right = "bridge 1" />
-                                                                    <neighbor left="bridge 1" right = "connection 1" />
-                                                                        <neighbor left="bridge 1" right = "t 2" />
-                                                                            <neighbor left="bridge 1" right = "t 3" />
-                                                                                <neighbor left="bridge 1" right = "track 1" />
-                                                                                    <neighbor left="bridge" right = "transition 1" />
-                                                                                        <neighbor left="bridge 1" right = "turn 1" />
-                                                                                            <neighbor left="bridge 1" right = "viad" />
-                                                                                                <neighbor left="bridge 1" right = "vias 1" />
-                                                                                                    <neighbor left="bridge" right = "wire" />
-                                                                                                        <neighbor left="component" right = "component" />
-                                                                                                            <neighbor left="connection 1" right = "component" />
-                                                                                                                <neighbor left="connection" right = "connection" />
-                                                                                                                    <neighbor left="connection" right = "corner" />
-                                                                                                                        <neighbor left="t 1" right = "connection 1" />
-                                                                                                                            <neighbor left="t 2" right = "connection 1" />
-                                                                                                                                <neighbor left="track 1" right = "connection 1" />
-                                                                                                                                    <neighbor left="turn" right = "connection 1" />
-                                                                                                                                        <neighbor left="substrate" right = "corner 1" />
-                                                                                                                                            <neighbor left="t 3" right = "corner 1" />
-                                                                                                                                                <neighbor left="track" right = "corner 1" />
-                                                                                                                                                    <neighbor left="transition 2" right = "corner 1" />
-                                                                                                                                                        <neighbor left="transition" right = "corner 1" />
-                                                                                                                                                            <neighbor left="turn 1" right = "corner 1" />
-                                                                                                                                                                <neighbor left="turn 2" right = "corner 1" />
-                                                                                                                                                                    <neighbor left="viad 1" right = "corner 1" />
-                                                                                                                                                                        <neighbor left="vias 1" right = "corner 1" />
-                                                                                                                                                                            <neighbor left="vias 2" right = "corner 1" />
-                                                                                                                                                                                <neighbor left="vias" right = "corner 1" />
-                                                                                                                                                                                    <neighbor left="wire 1" right = "corner 1" />
-                                                                                                                                                                                        <neighbor left="substrate" right = "substrate" />
-                                                                                                                                                                                            <neighbor left="substrate" right = "t 1" />
-                                                                                                                                                                                                <neighbor left="substrate" right = "track" />
-                                                                                                                                                                                                    <neighbor left="substrate" right = "transition 2" />
-                                                                                                                                                                                                        <neighbor left="substrate" right = "turn" />
-                                                                                                                                                                                                            <neighbor left="substrate" right = "viad 1" />
-                                                                                                                                                                                                                <neighbor left="substrate" right = "vias 2" />
-                                                                                                                                                                                                                    <neighbor left="substrate" right = "vias 3" />
-                                                                                                                                                                                                                        <neighbor left="substrate" right = "wire 1" />
-                                                                                                                                                                                                                            <neighbor left="t 1" right = "t 3" />
-                                                                                                                                                                                                                                <neighbor left="t 3" right = "t 1" />
-                                                                                                                                                                                                                                    <neighbor left="t 1" right = "t 2" />
-                                                                                                                                                                                                                                        <neighbor left="t 2" right = "t 2" />
-                                                                                                                                                                                                                                            <neighbor left="t 2" right = "t" />
-                                                                                                                                                                                                                                                <neighbor left="t 3" right = "track" />
-                                                                                                                                                                                                                                                    <neighbor left="t 1" right = "track 1" />
-                                                                                                                                                                                                                                                        <neighbor left="t 2" right = "track 1" />
-                                                                                                                                                                                                                                                            <neighbor left="t 1" right = "transition 3" />
-                                                                                                                                                                                                                                                                <neighbor left="t 3" right = "transition 2" />
-                                                                                                                                                                                                                                                                    <neighbor left="t 2" right = "transition 3" />
-                                                                                                                                                                                                                                                                        <neighbor left="t 3" right = "turn" />
-                                                                                                                                                                                                                                                                            <neighbor left="t 1" right = "turn 1" />
-                                                                                                                                                                                                                                                                                <neighbor left="t 2" right = "turn 1" />
-                                                                                                                                                                                                                                                                                    <neighbor left="t 2" right = "turn 2" />
-                                                                                                                                                                                                                                                                                        <neighbor left="t 3" right = "viad 1" />
-                                                                                                                                                                                                                                                                                            <neighbor left="t 1" right = "viad" />
-                                                                                                                                                                                                                                                                                                <neighbor left="t 2" right = "viad" />
-                                                                                                                                                                                                                                                                                                    <neighbor left="t 2" right = "vias 1" />
-                                                                                                                                                                                                                                                                                                        <neighbor left="t 1" right = "vias 1" />
-                                                                                                                                                                                                                                                                                                            <neighbor left="vias 1" right = "t 1" />
-                                                                                                                                                                                                                                                                                                                <neighbor left="vias 2" right = "t 1" />
-                                                                                                                                                                                                                                                                                                                    <neighbor left="wire 1" right = "t 1" />
-                                                                                                                                                                                                                                                                                                                        <neighbor left="track" right = "track" />
-                                                                                                                                                                                                                                                                                                                            <neighbor left="track 1" right = "track 1" />
-                                                                                                                                                                                                                                                                                                                                <neighbor left="track 1" right = "transition 3" />
-                                                                                                                                                                                                                                                                                                                                    <neighbor left="track" right = "transition 2" />
-                                                                                                                                                                                                                                                                                                                                        <neighbor left="track" right = "turn" />
-                                                                                                                                                                                                                                                                                                                                            <neighbor left="track 1" right = "turn 1" />
-                                                                                                                                                                                                                                                                                                                                                <neighbor left="track" right = "viad 1" />
-                                                                                                                                                                                                                                                                                                                                                    <neighbor left="track 1" right = "viad" />
-                                                                                                                                                                                                                                                                                                                                                        <neighbor left="track" right = "vias 2" />
-                                                                                                                                                                                                                                                                                                                                                            <neighbor left="track" right = "vias 3" />
-                                                                                                                                                                                                                                                                                                                                                                <neighbor left="track 1" right = "vias 1" />
-                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="track" right = "wire 1" />
-                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="transition 2" right = "turn" />
-                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="transition" right = "turn" />
-                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="transition 1" right = "turn 1" />
-                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="transition 2" right = "viad 1" />
-                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="transition 2" right = "vias 2" />
-                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="transition 2" right = "vias 3" />
-                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="transition 2" right = "vias" />
-                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="wire" right = "transition 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="transition 2" right = "wire 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="turn 1" right = "turn" />
-                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="turn 2" right = "turn" />
-                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="turn" right = "turn 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="turn" right = "turn 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="turn 1" right = "viad 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="turn" right = "viad" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="turn 1" right = "vias 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="turn 1" right = "vias 3" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="turn 1" right = "vias" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="turn" right = "vias 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="turn 1" right = "wire 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="viad 1" right = "viad 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="viad 1" right = "vias 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="viad 1" right = "vias 3" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="viad 1" right = "wire 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="vias 1" right = "wire 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="vias 2" right = "wire 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="vias 1" right = "vias 3" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="vias 2" right = "vias 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="vias 2" right = "vias" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="wire" right = "wire" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="wire 1" right = "wire 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="bridge 1" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="connection 3" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="dskew" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="skew" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="t" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="t 2" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="t 1" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="track 1" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="transition 1" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="turn 3" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="viad" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="vias 3" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="skew" right = "bridge 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="skew" right = "connection 1" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="corner" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="corner 3" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="skew" right = "dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="skew" right = "skew 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="skew 1" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="skew 1" right = "skew 3" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="substrate" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="t 3" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="t" right = "skew 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="t 2" right = "skew 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="t 1" right = "skew 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="track" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="track 1" right = "skew 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="transition" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="transition 1" right = "skew 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="turn 1" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="turn 2" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="turn 3" right = "skew 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="viad 1" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="viad" right = "skew 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="vias" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <neighbor left="vias 1" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <neighbor left="vias 2" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <neighbor left="vias 3" right = "skew 2" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <neighbor left="wire 1" right = "skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </neighbors>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                < subsets >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <subset name="Turnless" >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <tile name="bridge" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <tile name="component" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <tile name="connection" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <tile name="corner" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <tile name="substrate" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <tile name="t" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <tile name="track" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <tile name="transition" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <tile name="viad" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <tile name="vias" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <tile name="wire" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <tile name="skew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <tile name="dskew" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </subset>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        < /subsets>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        < /set>
