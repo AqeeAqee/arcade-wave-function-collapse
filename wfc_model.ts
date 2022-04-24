@@ -91,7 +91,8 @@ namespace WFC {
 
                 const amount = this.sumsOfOnes[i];
 
-                if (amount === 0) return false;
+                if (amount === 0) 
+                    return false;
 
                 const entropy = this.entropies[i];
 
@@ -104,7 +105,8 @@ namespace WFC {
                     }
                 }
             }
-
+            info.setScore(argmin)
+            pause(1)
             if (argmin === -1) {
                 this.observed = [];  //new Array($1)
 
@@ -116,7 +118,7 @@ namespace WFC {
                         }
                     }
                 }
-
+                info.setLife(5)
                 return true;
             }
 

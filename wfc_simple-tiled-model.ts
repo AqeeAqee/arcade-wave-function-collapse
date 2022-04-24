@@ -315,11 +315,13 @@ namespace WFC {
          *
          * @protected
          */
-        graphicsComplete(output: Image) {
+        graphicsComplete():Image {
+            const output: Image=image.create(this.FMX*this.tilesize, this.FMY*this.tilesize)
             for (let x = 0; x < this.FMX; x++) {
                 for (let y = 0; y < this.FMY; y++) {
                     const tile = this.tiles[this.observed[x + y * this.FMX]];
 
+                    output.drawImage(tile, x*this.tilesize, y*this.tilesize)
                     // for (let yt = 0; yt < this.tilesize; yt++) {
                     //     for (let xt = 0; xt < this.tilesize; xt++) {
                     //         const color = tile[xt + yt * this.tilesize];
@@ -333,6 +335,7 @@ namespace WFC {
                     // }
                 }
             }
+            return output
         };
 
         /**

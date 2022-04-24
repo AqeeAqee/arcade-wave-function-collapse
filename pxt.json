@@ -2,7 +2,8 @@
     "name": "WaveFunctionCollapse",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "project": "pkg:project.json"
     },
     "files": [
         "main.blocks",
@@ -12,7 +13,8 @@
         "wfc_model.ts",
         "wfc_random-indice.ts",
         "wfc_simple-tiled-model.ts",
-        "wfc_data.ts"
+        "wfc_data.ts",
+        "project.json"
     ],
     "testFiles": [
         "test.ts"

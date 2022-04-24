@@ -6,7 +6,8 @@ namespace WFC {
             public symmetry: string,
             public weight: number
         ) {
-            this.bitmap = assets.image(this.name)
+            this.bitmap = helpers.getImageByName(this.name)
+            screen.drawImage(this.bitmap,0,0)
         }
     }
 
@@ -30,7 +31,7 @@ namespace WFC {
             public neighbors: neighbor[],
             public subsets: { [index: string]: string[]; }
         ) {
-            this.unique == true
+            this.unique == false
         }
     }
 
