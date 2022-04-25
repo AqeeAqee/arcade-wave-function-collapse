@@ -23,14 +23,13 @@ namespace WFC {
             public tile: string[]
         ) { }
     }
-    type Map<T> = { [index: string]: T }
     export class Data {
         public unique: boolean
         constructor(
             public tilesize: number = 14,
             public tiles: tile[],
             public neighbors: neighbor[],
-            public subsets: Map<string[]>
+            public subsets: { [index: number]:string[]}
         ) {
             this.unique == false
         }
@@ -47,7 +46,7 @@ namespace WFC {
             new tile("t", "T", 0.1),
             new tile("track", "I", 2.0),
             new tile("transition", "T", 0.4),
-            new tile("turn", "L", 1.0),
+            new tile("turn", "L", 0.5),
             new tile("viad", "I", 0.1),
             new tile("vias", "T", 0.3),
             new tile("wire", "I", 0.5),
@@ -202,20 +201,30 @@ namespace WFC {
             new neighbor("wire 1", "skew"),
         ],
         {
-            "All": [
-                "substrate",
-                "component", "connection", "corner",
-                "t", "track", "skew", "dskew",
-                "turn",
-                "bridge", "transition", "wire", "viad", "vias",
-            ],
-            "Chips": ["component", "substrate", "turn", "connection", "corner", "track", "t"],
-            "Turnless": ["bridge", "component", "connection", "corner", "substrate", "t", "track", "transition", "viad", "vias", "wire", "skew", "dskew"],
-            "Wires": ['substrate', "t", "track", "skew", "dskew", "turn"],
-            "Wires2": ['substrate', "t", "track", "skew", "dskew", "turn", "bridge", "transition", "wire", "viad", "vias"],
-            "Debug": ['substrate', 'turn'],
         }
     )
+    
+    export enum Subsets {
+        All,
+        Turnless,
+        ChipAndTurn,
+        WiresOnly,
+        WiresAll,
+        Debug,
+    }
+
+    dataCircuit.subsets[Subsets.All]= [
+        "substrate",
+        "component", "connection", "corner",
+        "t", "track", "skew", "dskew",
+        "turn",
+        "bridge", "transition", "wire", "viad", "vias",
+    ]
+    dataCircuit.subsets[Subsets.Turnless] = ["bridge", "component", "connection", "corner", "substrate", "t", "track", "skew", "dskew", "transition", "viad", "vias", "wire"]
+    dataCircuit.subsets[Subsets.ChipAndTurn] = ["component", "substrate", "connection", "turn", "corner", "track", "t"]
+    dataCircuit.subsets[Subsets.WiresOnly] = ['substrate', "t", "track", "turn", "skew", "dskew"]
+    dataCircuit.subsets[Subsets.WiresAll] = ['substrate', "t", "track", "skew", "dskew", "turn", "bridge", "transition", "wire", "viad", "vias"]
+    dataCircuit.subsets[Subsets.Debug] = ['substrate', 'turn']
 
     export function getTileImage(name: string): Image {
         switch (helpers.stringTrim(name)) {
@@ -380,20 +389,20 @@ namespace WFC {
                 6 6 6 f 7 7 7 7 7 7 f 6 6 6
             `
             case "turn": return img`
-                f 6 6 f 7 7 7 7 7 7 f 6 6 6
-                f 6 6 f 7 7 7 7 7 7 f 6 6 6
-                f 6 6 f 7 7 7 7 7 7 f 6 6 6
-                f 6 6 f 7 7 7 7 7 7 f f f f
-                f 6 6 f 7 7 7 7 7 7 7 7 7 7
-                f 6 6 f 7 7 7 7 7 7 7 7 7 7
-                f 6 6 f 7 7 7 7 7 7 7 7 7 7
-                f 6 6 f 7 7 7 7 7 7 7 7 7 7
-                f 6 6 f 7 7 7 7 7 7 7 7 7 7
-                f 6 6 f 7 7 7 7 7 7 7 7 7 7
-                f 6 6 f f f f f f f f f f f
-                f 6 6 6 6 6 6 6 6 6 6 6 6 6
-                f 6 6 6 6 6 6 6 6 6 6 6 6 6
-                f 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f f f f
+                6 6 6 f 7 7 7 7 7 7 7 7 7 7
+                6 6 6 f 7 7 7 7 7 7 7 7 7 7
+                6 6 6 f 7 7 7 7 7 7 7 7 7 7
+                6 6 6 f 7 7 7 7 7 7 7 7 7 7
+                6 6 6 f 7 7 7 7 7 7 7 7 7 7
+                6 6 6 f 7 7 7 7 7 7 7 7 7 7
+                6 6 6 f f f f f f f f f f f
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
             `
             case "viad": return img`
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6

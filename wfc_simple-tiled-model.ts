@@ -18,7 +18,7 @@ namespace WFC {
          *
          * @constructor
          */
-        constructor(data: Data, subsetName: string, width: number, height: number, periodic: boolean) {//
+        constructor(data: Data, subsetName: Subsets, width: number, height: number, periodic: boolean) {//
             super()
             const tilesize = data.tilesize || 16;
 

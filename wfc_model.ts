@@ -241,8 +241,8 @@ namespace WFC {
          *
          * @public
          */
-        generate(rng: Function = function () { return Math.random()}) {
-            // rng = rng || function () { return Math.random() };
+        generate() {
+            const rng = function () { return Math.random() };
 
             if (!this.wave) this.initialize();
 
