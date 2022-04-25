@@ -23,30 +23,35 @@
  * info.setLife(99)
  */
 
-//["bridge", "component", "connection", "corner", "substrate", "t", "track", "transition", "viad", "vias", "wire", "skew", "dskew", "turn"]
-// ["t", "track", "turn", "viad", "vias", "dskew", "bridge"]
+let ms=control.micros()
 let wfc = new WFC.SimpleTiledModel(
     WFC.dataCircuit, 
-    // ["t", "track", "turn", "viad", "vias", "dskew", "bridge"],
-    ["turn", "viad"],
-    11, 8, false)//"Test2"
-
-let imgBg = image.create(wfc.FMX * wfc.tilesize, wfc.FMY * wfc.tilesize)
-scene.setBackgroundImage(imgBg)
-scene.setBackgroundColor(7)
-imgBg.fill(3)
-
+    "Turnless",
+    33, 33, false)
 wfc.generate(()=>{return Math.random()})
-wfc.tiles.forEach((v,i)=>{
-    imgBg.drawImage(v, (i%11)*wfc.tilesize, Math.idiv(i,11) * wfc.tilesize)
-})
-pause(100)
+ms=control.micros()-ms
+info.setScore(ms/1000)
+// let imgBg = image.create(wfc.FMX * wfc.tilesize, wfc.FMY * wfc.tilesize)
+// scene.setBackgroundImage(imgBg)
+// scene.setBackgroundColor(7)
+// imgBg.fill(3)
+
+
+
+// wfc.tiles.forEach((v,i)=>{
+//     imgBg.drawImage(v, (i%11)*wfc.tilesize, Math.idiv(i,11) * wfc.tilesize)
+// })
+
+
 const imgOut = wfc.graphicsIncomplete(3)
 let spriteOut = sprites.create(imgOut, SpriteKind.Player)
-
+spriteOut.setScale(.5, ScaleAnchor.Middle)
+controller.moveSprite(spriteOut)
 controller.A.onEvent(ControllerButtonEvent.Pressed, ()=>{
-    spriteOut.setFlag(SpriteFlag.Invisible, true)
+    spriteOut.setScale(1, ScaleAnchor.Middle)
+    // spriteOut.setFlag(SpriteFlag.Invisible, true)
 })
 controller.A.onEvent(ControllerButtonEvent.Released, () => {
-    spriteOut.setFlag(SpriteFlag.Invisible, false)
+    spriteOut.setScale(.5, ScaleAnchor.Middle)
+    // spriteOut.setFlag(SpriteFlag.Invisible, false)
 })

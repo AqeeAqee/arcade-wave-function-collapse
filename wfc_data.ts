@@ -23,13 +23,14 @@ namespace WFC {
             public tile: string[]
         ) { }
     }
+    type Map<T> ={ [index: string]: T}
     export class Data {
         public unique: boolean
         constructor(
             public tilesize: number = 14,
             public tiles: tile[],
             public neighbors: neighbor[],
-            public subsets:  {[index: string]: string[]}
+            public subsets:  Map<string[]>
         ) {
             this.unique == false
         }
@@ -39,7 +40,7 @@ namespace WFC {
         14,
         [
             new tile("bridge", "I", 1.0),
-            new tile("component", "X", 20.0),
+            new tile("component", "X", 4.0),
             new tile("connection", "T", 10.0),
             new tile("corner", "L", 10.0),
             new tile("substrate", "X", 2.0),
@@ -201,11 +202,18 @@ namespace WFC {
             new neighbor("wire 1", "skew"),
         ],
         {
-            "Chips":["component","substrate","turn","connection","corner","track","t"],
+            "All" : [ 
+                "substrate",
+                "component", "connection", "corner", 
+                "t", "track", "skew", "dskew", 
+                "turn",
+                "bridge", "transition", "wire", "viad", "vias", 
+                ],
+            "Chips": ["component","substrate","turn","connection","corner","track","t"],
             "Turnless": ["bridge", "component", "connection", "corner", "substrate", "t", "track", "transition", "viad", "vias", "wire", "skew", "dskew"],
-            "Debug":['substrate', 'turn'],
-            "Test": ["component", "connection", "viad", "vias", "wire", "skew", "dskew"],
-            "Test2": ["t", "track","turn"]
+            "Wires": ['substrate', "t", "track", "skew", "dskew", "turn"],
+            "Wires2": ['substrate', "t", "track", "skew", "dskew", "turn", "bridge", "transition", "wire", "viad", "vias"],
+            "Debug": ['substrate', 'turn'],
         }
     )
 }

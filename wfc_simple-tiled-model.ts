@@ -18,7 +18,7 @@ namespace WFC {
          *
          * @constructor
          */
-        constructor(data: Data, subset:string[], width: number, height: number, periodic: boolean) {//, subsetName: string
+        constructor(data: Data, subsetName: string, width: number, height: number, periodic: boolean) {//
             super()
             const tilesize = data.tilesize || 16;
 
@@ -31,10 +31,10 @@ namespace WFC {
 
             const unique = !!data.unique;
 
-            // let subset = null;
-            // if (subsetName && data.subsets && !!data.subsets[subsetName]) {
-            //     subset = data.subsets[subsetName];
-            // }
+            let subset = null;
+            if (subsetName && data.subsets && !!data.subsets[subsetName]) {
+                subset = data.subsets[subsetName];
+            }
 
             // const tile = function tile(f) {
             //     const result = []  // new Array(tilesize * tilesize);
@@ -115,7 +115,6 @@ namespace WFC {
                         };
                         break;
                     case 'F':
-                    case 'X':
                         cardinality = 8;
                         funcA = function (i) {
                             return i < 4 ? (i + 1) % 4 : 4 + (i - 1) % 4;
@@ -125,7 +124,6 @@ namespace WFC {
                         };
                         break;
                     default:
-                    game.splash("unsigned pattern")
                         cardinality = 1;
                         funcA = function (i) {
                             return i;
@@ -186,11 +184,9 @@ namespace WFC {
                     for (let t = 1; t < cardinality; t++) {
                         let img:Image
                         if (t < 4){
-                            img = this.tiles[this.T + t - 1].clone()
-                            img=img.rotated(90)
+                            img = this.tiles[this.T + t - 1].clone().rotated(-90)
                         }else{
                             img = this.tiles[this.T + t - 4].clone()
-                            img = img.clone()
                             img.flipX()
                         }
                         this.tiles.push(img)

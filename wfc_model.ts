@@ -106,8 +106,6 @@ namespace WFC {
                     }
                 }
             }
-            info.setScore(argmin)
-            pause(1)
             if (argmin === -1) {
                 this.observed = [];  //new Array($1)
 
