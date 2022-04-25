@@ -29,7 +29,7 @@ namespace WFC {
             public tilesize: number = 14,
             public tiles: tile[],
             public neighbors: neighbor[],
-            public subsets: { [index: string]: string[]; }
+            public subsets:  {[index: string]: string[]}
         ) {
             this.unique == false
         }
@@ -200,6 +200,11 @@ namespace WFC {
             new neighbor("vias 3", "skew 2"),
             new neighbor("wire 1", "skew"),
         ],
-        { "Turnless": ["bridge", "component", "connection", "corner", "substrate", "t", "track", "transition", "viad", "vias", "wire", "skew", "dskew"] }
+        {
+            "Chips":["component","substrate","turn","connection","corner","track","t"],
+            "Turnless": ["bridge", "component", "connection", "corner", "substrate", "t", "track", "transition", "viad", "vias", "wire", "skew", "dskew"],
+            "Debug":['substrate', 'turn'],
+            "Test": ["component", "connection", "viad", "vias", "wire", "skew", "dskew"]
+        }
     )
 }

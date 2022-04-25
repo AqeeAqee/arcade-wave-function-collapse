@@ -125,6 +125,7 @@ namespace WFC {
                         };
                         break;
                     default:
+                    game.splash("unsigned pattern")
                         cardinality = 1;
                         funcA = function (i) {
                             return i;
@@ -183,10 +184,11 @@ namespace WFC {
 
                     this.tiles.push(bitmap)
                     for (let t = 1; t < cardinality; t++) {
-                        let img = this.tiles[this.T + t - 1].clone()
+                        let img = this.tiles[this.T + t - 1]
                         if (t < 4)
-                            img.rotated(90)
+                            img=img.rotated(90)
                         else
+                            img = img.clone()
                             img.flipX()
                         this.tiles.push(img)
                     }
@@ -296,17 +298,16 @@ namespace WFC {
          *
          * @public
          */
-        //         graphics  (array:number[], defaultColor:number) {
-        //     array = array || [] //new Uint8Array(this.FMXxFMY * this.tilesize * this.tilesize * 4);
+        graphics( defaultColor:number):Image {
+            // array = array || [] //new Uint8Array(this.FMXxFMY * this.tilesize * this.tilesize * 4);
 
-        //     if (this.isGenerationComplete()) {
-        //         this.graphicsComplete(array);
-        //     } else {
-        //         this.graphicsIncomplete(array, defaultColor);
-        //     }
-
-        //     return array;
-        // };
+            if (this.isGenerationComplete()) {
+                return this.graphicsComplete();
+            } else {
+                return this.graphicsIncomplete(defaultColor);
+            }
+            // return array;
+        };
 
         /**
          * Set the RGBA data for a complete generation in a given array
@@ -316,6 +317,9 @@ namespace WFC {
          * @protected
          */
         graphicsComplete():Image {
+            if(!this.observed||this.observed.length==0)
+                return null
+
             const output: Image=image.create(this.FMX*this.tilesize, this.FMY*this.tilesize)
             for (let x = 0; x < this.FMX; x++) {
                 for (let y = 0; y < this.FMY; y++) {
@@ -346,62 +350,73 @@ namespace WFC {
          *
          * @protected
          */
-        // graphicsIncomplete  (array:number[], defaultColor:number) {
-        //     if (!defaultColor || defaultColor.length !== 4) {
-        //         defaultColor = false;
-        //     }
+        graphicsIncomplete(defaultColor: number): Image {
+            // if (!defaultColor || defaultColor.length !== 4) {
+            //     defaultColor = false;
+            // }
 
-        //     for (let x = 0; x < this.FMX; x++) {
-        //         for (let y = 0; y < this.FMY; y++) {
-        //             const w = this.wave[x + y * this.FMX];
-        //             let amount = 0;
-        //             let sumWeights = 0;
+            const imgOut=image.create(this.FMX*this.tilesize, this.FMY*this.tilesize)
+            //debug
+            imgOut.fill(1)
 
-        //             for (let t = 0; t < this.T; t++) {
-        //                 if (w[t]) {
-        //                     amount++;
-        //                     sumWeights += this.weights[t];
-        //                 }
-        //             }
+            for (let x = 0; x < this.FMX; x++) {
+                for (let y = 0; y < this.FMY; y++) {
+                    const w = this.wave[x + y * this.FMX];
+                    let amount = 0;
+                    let sumWeights = 0;
 
-        //             const lambda = 1 / sumWeights;
+                    for (let t = 0; t < this.T; t++) {
+                        if (w[t]) {
+                            amount++;
+                            sumWeights += this.weights[t];
+                        }
+                    }
 
-        //             for (let yt = 0; yt < this.tilesize; yt++) {
-        //                 for (let xt = 0; xt < this.tilesize; xt++) {
-        //                     const pixelIndex = (x * this.tilesize + xt + (y * this.tilesize + yt) * this.FMX * this.tilesize) * 4;
+                    const lambda = 1 / sumWeights;
 
-        //                     if (defaultColor && amount === this.T) {
-        //                         array[pixelIndex] = defaultColor[0];
-        //                         array[pixelIndex + 1] = defaultColor[1];
-        //                         array[pixelIndex + 2] = defaultColor[2];
-        //                         array[pixelIndex + 3] = defaultColor[3];
-        //                     } else {
-        //                         let r = 0;
-        //                         let g = 0;
-        //                         let b = 0;
-        //                         let a = 0;
+                    for (let yt = 0; yt < this.tilesize; yt++) {
+                        for (let xt = 0; xt < this.tilesize; xt++) {
+                            // const pixelIndex = (x * this.tilesize + xt + (y * this.tilesize + yt) * this.FMX * this.tilesize) * 4;
+                            const xout = x * this.tilesize + xt
+                            const yout = (y * this.tilesize + yt)
 
-        //                         for (let t = 0; t < this.T; t++) {
-        //                             if (w[t]) {
-        //                                 const c = this.tiles[t][xt + yt * this.tilesize];
-        //                                 const weight = this.weights[t] * lambda;
-        //                                 r += c[0] * weight;
-        //                                 g += c[1] * weight;
-        //                                 b += c[2] * weight;
-        //                                 a += c[3] * weight;
-        //                             }
-        //                         }
+                            if (defaultColor && amount === this.T) {
+                                imgOut.setPixel(xout,yout, defaultColor)
+                                // array[pixelIndex] = defaultColor[0];
+                                // array[pixelIndex + 1] = defaultColor[1];
+                                // array[pixelIndex + 2] = defaultColor[2];
+                                // array[pixelIndex + 3] = defaultColor[3];
+                            } else {
+                                // let r = 0;
+                                // let g = 0;
+                                // let b = 0;
+                                // let a = 0;
+                                let cout=0
 
-        //                         array[pixelIndex] = r;
-        //                         array[pixelIndex + 1] = g;
-        //                         array[pixelIndex + 2] = b;
-        //                         array[pixelIndex + 3] = a;
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+                                for (let t = 0; t < this.T; t++) {
+                                    if (w[t]) {
+                                        // const c = this.tiles[t][xt + yt * this.tilesize];
+                                        const c=this.tiles[t].getPixel(xt,yt)
+                                        const weight = this.weights[t] * lambda;
+                                        cout+= c*weight
+                                        // r += c[0] * weight;
+                                        // g += c[1] * weight;
+                                        // b += c[2] * weight;
+                                        // a += c[3] * weight;
+                                    }
+                                }
+                                imgOut.setPixel(xout, yout, cout)
+                                // array[pixelIndex] = r;
+                                // array[pixelIndex + 1] = g;
+                                // array[pixelIndex + 2] = b;
+                                // array[pixelIndex + 3] = a;
+                            }
+                        }
+                    }
+                }
+            }
+            return imgOut
+        }
     }
     // module.exports = SimpleTiledModel;
 }

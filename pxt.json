@@ -16,9 +16,7 @@
         "wfc_data.ts",
         "project.json"
     ],
-    "testFiles": [
-        "test.ts"
-    ],
+    "testFiles": [],
     "targetVersions": {
         "target": "1.8.22",
         "targetId": "arcade"
