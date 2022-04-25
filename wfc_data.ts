@@ -204,7 +204,8 @@ namespace WFC {
             "Chips":["component","substrate","turn","connection","corner","track","t"],
             "Turnless": ["bridge", "component", "connection", "corner", "substrate", "t", "track", "transition", "viad", "vias", "wire", "skew", "dskew"],
             "Debug":['substrate', 'turn'],
-            "Test": ["component", "connection", "viad", "vias", "wire", "skew", "dskew"]
+            "Test": ["component", "connection", "viad", "vias", "wire", "skew", "dskew"],
+            "Test2": ["t", "track","turn"]
         }
     )
 }

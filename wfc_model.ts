@@ -87,7 +87,8 @@ namespace WFC {
             let argmin = -1;
 
             for (let i = 0; i < this.FMXxFMY; i++) {
-                if (this.onBoundary(i % this.FMX, i / this.FMX | 0)) continue;
+                if (this.onBoundary(i % this.FMX, i / this.FMX | 0)) 
+                    continue;
 
                 const amount = this.sumsOfOnes[i];
 
@@ -118,7 +119,6 @@ namespace WFC {
                         }
                     }
                 }
-                info.setLife(5)
                 return true;
             }
 
@@ -131,6 +131,8 @@ namespace WFC {
             for (let t = 0; t < this.T; t++) {
                 if (w[t] !== (t === r)) this.ban(argmin, t);
             }
+            //debug
+            // game.splash(w.filter((v)=> v).length)
 
             return null;
         };
@@ -170,7 +172,10 @@ namespace WFC {
                         const comp = compat[t2];
                         comp[d]--;
                         if (comp[d] == 0) this.ban(i2, t2);
+                    //debug
+                    // game.splash([i2,t2,d,comp[d]].join())
                     }
+
                 }
             }
         };
@@ -208,7 +213,7 @@ namespace WFC {
          *
          * @public
          */
-        iterate(iterations: number, rng: Function) {
+        iterate(iterations: number, rng: Function = function () { return Math.random()}) {
             if (!this.wave) this.initialize();
 
             if (!this.initiliazedField) {
@@ -216,7 +221,7 @@ namespace WFC {
             }
 
             iterations = iterations || 0;
-            rng = rng || function () { return Math.random() };
+            // rng = rng || function () { return Math.random() };
 
             for (let i = 0; i < iterations || iterations === 0; i++) {
                 const result = this.singleIteration(rng);
@@ -238,8 +243,8 @@ namespace WFC {
          *
          * @public
          */
-        generate(rng: Function) {
-            rng = rng || function () { return Math.random() };
+        generate(rng: Function = function () { return Math.random()}) {
+            // rng = rng || function () { return Math.random() };
 
             if (!this.wave) this.initialize();
 
