@@ -6,8 +6,8 @@ namespace WFC {
             public symmetry: string,
             public weight: number
         ) {
-            this.bitmap = helpers.getImageByName(this.name)
-            screen.drawImage(this.bitmap,0,0)
+            const test = getTileImage(this.name)
+            this.bitmap = test
         }
     }
 
@@ -23,14 +23,14 @@ namespace WFC {
             public tile: string[]
         ) { }
     }
-    type Map<T> ={ [index: string]: T}
+    type Map<T> = { [index: string]: T }
     export class Data {
         public unique: boolean
         constructor(
             public tilesize: number = 14,
             public tiles: tile[],
             public neighbors: neighbor[],
-            public subsets:  Map<string[]>
+            public subsets: Map<string[]>
         ) {
             this.unique == false
         }
@@ -40,7 +40,7 @@ namespace WFC {
         14,
         [
             new tile("bridge", "I", 1.0),
-            new tile("component", "X", 4.0),
+            new tile("component", "X", 30.0),
             new tile("connection", "T", 10.0),
             new tile("corner", "L", 10.0),
             new tile("substrate", "X", 2.0),
@@ -202,18 +202,249 @@ namespace WFC {
             new neighbor("wire 1", "skew"),
         ],
         {
-            "All" : [ 
+            "All": [
                 "substrate",
-                "component", "connection", "corner", 
-                "t", "track", "skew", "dskew", 
+                "component", "connection", "corner",
+                "t", "track", "skew", "dskew",
                 "turn",
-                "bridge", "transition", "wire", "viad", "vias", 
-                ],
-            "Chips": ["component","substrate","turn","connection","corner","track","t"],
+                "bridge", "transition", "wire", "viad", "vias",
+            ],
+            "Chips": ["component", "substrate", "turn", "connection", "corner", "track", "t"],
             "Turnless": ["bridge", "component", "connection", "corner", "substrate", "t", "track", "transition", "viad", "vias", "wire", "skew", "dskew"],
             "Wires": ['substrate', "t", "track", "skew", "dskew", "turn"],
             "Wires2": ['substrate', "t", "track", "skew", "dskew", "turn", "bridge", "transition", "wire", "viad", "vias"],
             "Debug": ['substrate', 'turn'],
         }
     )
+
+    export function getTileImage(name: string): Image {
+        switch (helpers.stringTrim(name)) {
+            case "wire": return img`
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                f f f f f f f f f f f f f f
+                b b b b b b b b b b b b b b
+                b b b b b b b b b b b b b b
+                b b b b b b b b b b b b b b
+                b b b b b b b b b b b b b b
+                b b b b b b b b b b b b b b
+                b b b b b b b b b b b b b b
+                f f f f f f f f f f f f f f
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+            `
+            case "vias": return img`
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f b b b b b b f 6 6 6
+                6 6 f b b b b b b b b f 6 6
+                6 f b b b b b b b b b b f 6
+                6 f b b b b . . b b b b f 6
+                6 f b b b . . . . b b b f 6
+                6 f b b b . . . . b b b f 6
+                6 f b b b b . . b b b b f 6
+                6 f b b b b b b b b b b f 6
+                6 6 f b b b b b b b b f 6 6
+                6 6 6 f b b b b b b f 6 6 6
+                6 6 6 6 f f f f f f 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+            `
+            case "bridge": return img`
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                f f f f f f f f f f f f f f
+                b b b b b b b b b b b b b b
+                b b b b b b b b b b b b b b
+                b b b b b b b b b b b b b b
+                b b b b b b b b b b b b b b
+                b b b b b b b b b b b b b b
+                b b b b b b b b b b b b b b
+                f f f f f f f f f f f f f f
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+            `
+            case "component": return img`
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+            `
+            case "connection": return img`
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f f f f f f f f 6 6 6
+                6 6 6 f b b b b b b f 6 6 6
+                6 6 6 f b b b b b b f 6 6 6
+                6 6 6 f b b b b b b f 6 6 6
+                6 6 6 f b b b b b b f 6 6 6
+                6 6 f f f f f f f f f f 6 6
+                6 6 f b b b b b b b b f 6 6
+                6 6 f b b b b b b b b f 6 6
+                6 6 f b b b b b b b b f 6 6
+                6 6 f b b b b b b b b f 6 6
+                f f f f f f f f f f f f f f
+                c c c c c c c c c c c c c c
+            `
+            case "corner": return img`
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                f f 6 6 6 6 6 6 6 6 6 6 6 6
+                c f 6 6 6 6 6 6 6 6 6 6 6 6
+            `
+            case "dskew": return img`
+                6 6 6 f 7 7 7 7 7 7 7 f 6 6
+                6 6 6 6 f 7 7 7 7 7 7 7 f 6
+                6 6 6 6 6 f 7 7 7 7 7 7 7 f
+                f 6 6 6 6 6 f 7 7 7 7 7 7 7
+                7 f 6 6 6 6 6 f 7 7 7 7 7 7
+                7 7 f 6 6 6 6 6 f 7 7 7 7 7
+                7 7 7 f 6 6 6 6 6 f 7 7 7 7
+                7 7 7 7 f 6 6 6 6 6 f 7 7 7
+                7 7 7 7 7 f 6 6 6 6 6 f 7 7
+                7 7 7 7 7 7 f 6 6 6 6 6 f 7
+                7 7 7 7 7 7 7 f 6 6 6 6 6 f
+                f 7 7 7 7 7 7 7 f 6 6 6 6 6
+                6 f 7 7 7 7 7 7 7 f 6 6 6 6
+                6 6 f 7 7 7 7 7 7 7 f 6 6 6
+            `
+            case "t": return img`
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                f f f f f f f f f f f f f f
+                7 7 7 7 7 7 7 7 7 7 7 7 7 7
+                7 7 7 7 7 7 7 7 7 7 7 7 7 7
+                7 7 7 7 7 7 7 7 7 7 7 7 7 7
+                7 7 7 7 7 7 7 7 7 7 7 7 7 7
+                7 7 7 7 7 7 7 7 7 7 7 7 7 7
+                7 7 7 7 7 7 7 7 7 7 7 7 7 7
+                f f f f 7 7 7 7 7 7 f f f f
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+            `
+            case "track": return img`
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+            `
+            case "transition": return img`
+                6 6 6 f b b b b b b f 6 6 6
+                6 6 6 f b b b b b b f 6 6 6
+                6 6 6 f b b b b b b f 6 6 6
+                6 6 f f b b b b b b f f 6 6
+                6 f b f b b b b b b f b f 6
+                6 f b f b b b b b b f b f 6
+                6 f b f b b b b b b f b f 6
+                6 f b f b b b b b b f b f 6
+                6 f b f b b b b b b f b f 6
+                6 f b b b b b b b b b b f 6
+                6 6 f b b b b b b b b f 6 6
+                6 6 6 f b b b b b b f 6 6 6
+                6 6 6 f 7 b b b b 7 f 6 6 6
+                6 6 6 f 7 7 7 7 7 7 f 6 6 6
+            `
+            case "turn": return img`
+                f 6 6 f 7 7 7 7 7 7 f 6 6 6
+                f 6 6 f 7 7 7 7 7 7 f 6 6 6
+                f 6 6 f 7 7 7 7 7 7 f 6 6 6
+                f 6 6 f 7 7 7 7 7 7 f f f f
+                f 6 6 f 7 7 7 7 7 7 7 7 7 7
+                f 6 6 f 7 7 7 7 7 7 7 7 7 7
+                f 6 6 f 7 7 7 7 7 7 7 7 7 7
+                f 6 6 f 7 7 7 7 7 7 7 7 7 7
+                f 6 6 f 7 7 7 7 7 7 7 7 7 7
+                f 6 6 f 7 7 7 7 7 7 7 7 7 7
+                f 6 6 f f f f f f f f f f f
+                f 6 6 6 6 6 6 6 6 6 6 6 6 6
+                f 6 6 6 6 6 6 6 6 6 6 6 6 6
+                f 6 6 6 6 6 6 6 6 6 6 6 6 6
+            `
+            case "viad": return img`
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 f f f f f f 6 6 6 6
+                6 6 6 f b b b b b b f 6 6 6
+                f f f b b b b b b b b f f f
+                7 7 b b b b b b b b b b 7 7
+                7 7 b b b b . . b b b b 7 7
+                7 7 b b b . . . . b b b 7 7
+                7 7 b b b . . . . b b b 7 7
+                7 7 b b b b . . b b b b 7 7
+                7 7 b b b b b b b b b b 7 7
+                f f f b b b b b b b b f f f
+                6 6 6 f b b b b b b f 6 6 6
+                6 6 6 6 f f f f f f 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+            `
+            case "skew": return img`
+                6 6 6 f 7 7 7 7 7 7 7 f 6 6
+                6 6 6 6 f 7 7 7 7 7 7 7 f 6
+                6 6 6 6 6 f 7 7 7 7 7 7 7 f
+                6 6 6 6 6 6 f 7 7 7 7 7 7 7
+                6 6 6 6 6 6 6 f 7 7 7 7 7 7
+                6 6 6 6 6 6 6 6 f 7 7 7 7 7
+                6 6 6 6 6 6 6 6 6 f 7 7 7 7
+                6 6 6 6 6 6 6 6 6 6 f 7 7 7
+                6 6 6 6 6 6 6 6 6 6 6 f 7 7
+                6 6 6 6 6 6 6 6 6 6 6 6 f 7
+                6 6 6 6 6 6 6 6 6 6 6 6 6 f
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+            `
+            case "substrate": return img`
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+            `
+default:
+return null
+        }
+    }
 }

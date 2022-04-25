@@ -2,8 +2,7 @@
     "name": "WaveFunctionCollapse",
     "description": "",
     "dependencies": {
-        "device": "*",
-        "project": "pkg:project.json"
+        "device": "*"
     },
     "files": [
         "main.blocks",
