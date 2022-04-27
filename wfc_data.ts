@@ -313,7 +313,7 @@ namespace WFC {
                 f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
-                f 5 f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
@@ -329,7 +329,7 @@ namespace WFC {
                 f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
-                f 5 f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
@@ -486,7 +486,7 @@ namespace WFC {
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
-                6 5 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
@@ -502,7 +502,7 @@ namespace WFC {
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
-                6 5 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
