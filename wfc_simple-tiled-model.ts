@@ -341,6 +341,60 @@ namespace WFC {
             return output
         };
 
+
+        drawIncompleteTile(x: number, y: number, imgOut: Image, left: number, top: number, defaultColor: number){
+            const w = this.wave[x + y * this.FMX];
+            let amount = 0;
+            let sumWeights = 0;
+
+            for (let t = 0; t < this.T; t++) {
+                if (w[t]) {
+                    amount++;
+                    sumWeights += this.weights[t];
+                }
+            }
+
+            const lambda = 1 / sumWeights;
+
+            for (let yt = 0; yt < this.tilesize; yt++) {
+                for (let xt = 0; xt < this.tilesize; xt++) {
+                    // const pixelIndex = (x * this.tilesize + xt + (y * this.tilesize + yt) * this.FMX * this.tilesize) * 4;
+
+                    if (defaultColor && amount === this.T) {
+                        imgOut.setPixel(left + xt, top + yt, defaultColor)
+                        // array[pixelIndex] = defaultColor[0];
+                        // array[pixelIndex + 1] = defaultColor[1];
+                        // array[pixelIndex + 2] = defaultColor[2];
+                        // array[pixelIndex + 3] = defaultColor[3];
+                    } else {
+                        // let r = 0;
+                        // let g = 0;
+                        // let b = 0;
+                        // let a = 0;
+                        let count = 0
+
+                        for (let t = 0; t < this.T; t++) {
+                            if (w[t]) {
+                                // const c = this.tiles[t][xt + yt * this.tilesize];
+                                const c = this.tiles[t].getPixel(xt, yt)
+                                const weight = this.weights[t] * lambda;
+                                count += c * weight
+                                // r += c[0] * weight;
+                                // g += c[1] * weight;
+                                // b += c[2] * weight;
+                                // a += c[3] * weight;
+                            }
+                        }
+                        imgOut.setPixel(left + xt, top + yt, count)
+                        // array[pixelIndex] = r;
+                        // array[pixelIndex + 1] = g;
+                        // array[pixelIndex + 2] = b;
+                        // array[pixelIndex + 3] = a;
+                    }
+                }
+            }
+        }
+
         /**
          * Set the RGBA data for an incomplete generation in a given array
          *
@@ -349,69 +403,18 @@ namespace WFC {
          *
          * @protected
          */
-        graphicsIncomplete(defaultColor: number): Image {
+        graphicsIncomplete(defaultColor: number, imgOut?: Image): Image {
             // if (!defaultColor || defaultColor.length !== 4) {
             //     defaultColor = false;
             // }
-
-            const imgOut=image.create(this.FMX*this.tilesize, this.FMY*this.tilesize)
-            //debug
-            imgOut.fill(1)
+            if(!imgOut)
+                imgOut=image.create(this.FMX*this.tilesize, this.FMY*this.tilesize)
 
             for (let x = 0; x < this.FMX; x++) {
                 for (let y = 0; y < this.FMY; y++) {
-                    const w = this.wave[x + y * this.FMX];
-                    let amount = 0;
-                    let sumWeights = 0;
-
-                    for (let t = 0; t < this.T; t++) {
-                        if (w[t]) {
-                            amount++;
-                            sumWeights += this.weights[t];
-                        }
-                    }
-
-                    const lambda = 1 / sumWeights;
-
-                    for (let yt = 0; yt < this.tilesize; yt++) {
-                        for (let xt = 0; xt < this.tilesize; xt++) {
-                            // const pixelIndex = (x * this.tilesize + xt + (y * this.tilesize + yt) * this.FMX * this.tilesize) * 4;
-                            const xout = x * this.tilesize + xt
-                            const yout = (y * this.tilesize + yt)
-
-                            if (defaultColor && amount === this.T) {
-                                imgOut.setPixel(xout,yout, defaultColor)
-                                // array[pixelIndex] = defaultColor[0];
-                                // array[pixelIndex + 1] = defaultColor[1];
-                                // array[pixelIndex + 2] = defaultColor[2];
-                                // array[pixelIndex + 3] = defaultColor[3];
-                            } else {
-                                // let r = 0;
-                                // let g = 0;
-                                // let b = 0;
-                                // let a = 0;
-                                let cout=0
-
-                                for (let t = 0; t < this.T; t++) {
-                                    if (w[t]) {
-                                        // const c = this.tiles[t][xt + yt * this.tilesize];
-                                        const c=this.tiles[t].getPixel(xt,yt)
-                                        const weight = this.weights[t] * lambda;
-                                        cout+= c*weight
-                                        // r += c[0] * weight;
-                                        // g += c[1] * weight;
-                                        // b += c[2] * weight;
-                                        // a += c[3] * weight;
-                                    }
-                                }
-                                imgOut.setPixel(xout, yout, cout)
-                                // array[pixelIndex] = r;
-                                // array[pixelIndex + 1] = g;
-                                // array[pixelIndex + 2] = b;
-                                // array[pixelIndex + 3] = a;
-                            }
-                        }
-                    }
+                    const left = x * this.tilesize
+                    const top = y * this.tilesize
+                    this.drawIncompleteTile(x,y, imgOut, left, top, defaultColor)
                 }
             }
             return imgOut

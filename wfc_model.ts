@@ -31,6 +31,8 @@ namespace WFC {
 
         //aqee
         weights: number[] = []
+        choosePositionHandler: () => number
+        chooseTileHandler: (xPos:number,yPos:number) => number
 
         constructor() { }
 
@@ -81,8 +83,7 @@ namespace WFC {
          *
          * @protected
          */
-        observe(rng: Function) {
-
+        observe() {
             let min = 1000;
             let argmin = -1;
 
@@ -98,7 +99,7 @@ namespace WFC {
                 const entropy = this.entropies[i];
 
                 if (amount > 1 && entropy <= min) {
-                    const noise = 0.000001 * rng();
+                    const noise = 0.000001 * Math.random();
 
                     if (entropy + noise < min) {
                         min = entropy + noise;
@@ -120,17 +121,29 @@ namespace WFC {
                 return true;
             }
 
-            for (let t = 0; t < this.T; t++) {
-                this.distribution[t] = this.wave[argmin][t] ? this.weights[t] : 0;
+            if(this.choosePositionHandler){
+                const chooseIndex =this.choosePositionHandler()
+                if(chooseIndex!=-1)
+                    argmin=chooseIndex
             }
-            const r = randomIndice(this.distribution, rng());
+
+            let r:number=-1
+            if(this.chooseTileHandler){
+                const chooseTile=this.chooseTileHandler(argmin%this.FMX, Math.idiv(argmin,this.FMX))
+                if(chooseTile!=-1)
+                    r=chooseTile
+            }
+            if(r==-1){
+                for (let t = 0; t < this.T; t++) {
+                    this.distribution[t] = this.wave[argmin][t] ? this.weights[t] : 0;
+                }
+                r = randomIndice(this.distribution, Math.random());
+            }
 
             const w = this.wave[argmin];
             for (let t = 0; t < this.T; t++) {
                 if (w[t] !== (t === r)) this.ban(argmin, t);
             }
-            //debug
-            // game.splash(w.filter((v)=> v).length)
 
             return null;
         };
@@ -187,8 +200,8 @@ namespace WFC {
          *
          * @protected
          */
-        singleIteration(rng: Function) {
-            const result = this.observe(rng);
+        singleIteration() {
+            const result = this.observe();
 
             if (result !== null) {
                 this.generationComplete = result;
@@ -211,7 +224,7 @@ namespace WFC {
          *
          * @public
          */
-        iterate(iterations: number, rng: Function = function () { return Math.random()}) {
+        iterate(iterations: number) {
             if (!this.wave) this.initialize();
 
             if (!this.initiliazedField) {
@@ -222,7 +235,7 @@ namespace WFC {
             // rng = rng || function () { return Math.random() };
 
             for (let i = 0; i < iterations || iterations === 0; i++) {
-                const result = this.singleIteration(rng);
+                const result = this.singleIteration();
 
                 if (result !== null) {
                     return !!result;
@@ -242,14 +255,11 @@ namespace WFC {
          * @public
          */
         generate() {
-            const rng = function () { return Math.random() };
-
             if (!this.wave) this.initialize();
-
             this.clear();
 
             while (true) {
-                const result = this.singleIteration(rng);
+                const result = this.singleIteration();
 
                 if (result !== null) {
                     return !!result;

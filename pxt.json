@@ -2,7 +2,8 @@
     "name": "WaveFunctionCollapse",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "block-menu-icon": "github:aqeeaqee/arcade-custom-menu#v0.0.2"
     },
     "files": [
         "main.blocks",
@@ -13,7 +14,8 @@
         "wfc_random-indice.ts",
         "wfc_simple-tiled-model.ts",
         "wfc_data.ts",
-        "project.json"
+        "tilemap.g.jres",
+        "tilemap.g.ts"
     ],
     "testFiles": [],
     "targetVersions": {

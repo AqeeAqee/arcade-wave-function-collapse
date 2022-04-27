@@ -38,7 +38,9 @@ namespace WFC {
     export let dataCircuit = new Data(
         14,
         [
-            new tile("bridge", "I", 1.0),
+            new tile("component2side", "I", 30.0),
+            new tile("chipside", "T", 2.0),
+
             new tile("component", "X", 30.0),
             new tile("connection", "T", 10.0),
             new tile("corner", "L", 10.0),
@@ -51,9 +53,34 @@ namespace WFC {
             new tile("vias", "T", 0.3),
             new tile("wire", "I", 0.5),
             new tile("skew", "L", 2.0),
-            new tile("dskew", "\\", 2.0)
+            new tile("dskew", "\\", 2.0),
+            new tile("bridge", "I", 1.0),
         ],
         [
+            //testing Chip2Side
+            new neighbor("component2side", "component2side"),
+            new neighbor("component2side 1", "component2side 1"),
+            new neighbor("connection 1", "component2side"),
+
+            new neighbor("chipside 1", "component2side 1"),
+            new neighbor("chipside", "chipside"),
+ 
+            new neighbor("chipside", "corner"),
+
+            new neighbor("chipside 3", "t 1"),
+            new neighbor("chipside 3", "track"),
+            new neighbor("chipside 3", "transition 2"),
+            new neighbor("chipside 3", "turn"),
+            new neighbor("chipside 3", "viad 1"),
+            new neighbor("chipside 3", "vias 2"),
+            new neighbor("chipside 3", "vias 3"),
+            new neighbor("chipside 3", "wire 1"),
+            new neighbor("chipside 3", "skew"),
+
+            // new neighbor("chipside", "component2side"),
+
+
+            //end
             new neighbor("bridge", "bridge"),
             new neighbor("bridge 1", "bridge 1"),
             new neighbor("bridge 1", "connection 1"),
@@ -207,6 +234,7 @@ namespace WFC {
     export enum Subsets {
         All,
         Turnless,
+        Chip2Side,
         ChipAndTurn,
         WiresOnly,
         WiresAll,
@@ -221,6 +249,7 @@ namespace WFC {
         "bridge", "transition", "wire", "viad", "vias",
     ]
     dataCircuit.subsets[Subsets.Turnless] = ["bridge", "component", "connection", "corner", "substrate", "t", "track", "skew", "dskew", "transition", "viad", "vias", "wire"]
+    dataCircuit.subsets[Subsets.Chip2Side] = ["component2side", "chipside","bridge", "connection", "corner", "substrate", "t", "track", "skew", "dskew", "transition", "viad", "vias", "wire"]
     dataCircuit.subsets[Subsets.ChipAndTurn] = ["component", "substrate", "connection", "turn", "corner", "track", "t"]
     dataCircuit.subsets[Subsets.WiresOnly] = ['substrate', "t", "track", "turn", "skew", "dskew"]
     dataCircuit.subsets[Subsets.WiresAll] = ['substrate', "t", "track", "skew", "dskew", "turn", "bridge", "transition", "wire", "viad", "vias"]
@@ -284,7 +313,23 @@ namespace WFC {
                 f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
+                f 5 f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+            `
+            case "component2side": return img`
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f f f f f f f f f f f f f f
+                f 5 f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
                 f f f f f f f f f f f f f f
@@ -441,6 +486,7 @@ namespace WFC {
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 5 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
@@ -450,7 +496,22 @@ namespace WFC {
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
+            `
+            case "chipside": return img`
                 6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 5 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                6 6 6 6 6 6 6 6 6 6 6 6 6 6
+                f f f f f f f f f f f f f f
+                c c c c c c c c c c c c c c
             `
 default:
 return null
